@@ -19,14 +19,15 @@ package cmd
 import (
 	"bytes"
 	"fmt"
-	"github.com/olekukonko/tablewriter"
-	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v3"
-	"io/ioutil"
+	"os"
 	"regexp"
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/olekukonko/tablewriter"
+	"github.com/spf13/cobra"
+	"gopkg.in/yaml.v3"
 )
 
 var inputsHeader = "## Inputs"
@@ -70,7 +71,7 @@ type Action struct {
 }
 
 func (a *Action) getAction() error {
-	actionYaml, err := ioutil.ReadFile(actionFileName)
+	actionYaml, err := os.ReadFile(actionFileName)
 	if err != nil {
 		return err
 	}
@@ -242,7 +243,7 @@ func (a *Action) renderOutput() error {
 		}
 	}
 
-	input, err := ioutil.ReadFile(outputFileName)
+	input, err := os.ReadFile(outputFileName)
 
 	if err != nil {
 		return err
@@ -279,7 +280,7 @@ func (a *Action) renderOutput() error {
 	}
 
 	if len(output) > 0 {
-		if err = ioutil.WriteFile(outputFileName, output, 0666); err != nil {
+		if err = os.WriteFile(outputFileName, output, 0666); err != nil {
 			cobra.CheckErr(err)
 		}
 	}
